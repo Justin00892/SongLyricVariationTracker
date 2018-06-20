@@ -61,7 +61,6 @@ namespace WordVariationTracker
                     count = _wordCount[word] + 1;
                 _wordCount[word] = count;
             }
-            _wordCount.OrderBy()
         }
 
         private void MainForm_Load(object sender, EventArgs e)
