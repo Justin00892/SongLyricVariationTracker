@@ -10,6 +10,8 @@ namespace WordVariationTracker
     public partial class MainForm : Form
     {
         private readonly SortedDictionary<string, int> _wordCount = new SortedDictionary<string, int>();
+
+        #region removableWordsList
         private readonly List<string> _removableWords = new List<string>()
         {
             "a",
@@ -43,6 +45,7 @@ namespace WordVariationTracker
             "their",
             "my"
         };
+        #endregion
         public MainForm()
         {
             InitializeComponent();
@@ -65,7 +68,7 @@ namespace WordVariationTracker
                 }
 
                 text = Regex.Replace(text, @"\t|\n|\r", " ");
-                var list = text.Split(" ,!.?:;\"".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                var list = text.Split(" ,!.?:;\"()[]{}*".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                 var wordList = ProcessList(list);
                 var topTen = wordList.GetRange(0, 10);
                 wordList.RemoveRange(0,10);
