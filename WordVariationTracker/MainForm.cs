@@ -43,7 +43,9 @@ namespace WordVariationTracker
             "his",
             "hers",
             "their",
-            "my"
+            "my",
+            "them",
+            "theirs"
         };
         #endregion
         public MainForm()
@@ -71,13 +73,6 @@ namespace WordVariationTracker
                 var list = text.Split(" ,!.?:;\"()[]{}*".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                 var wordList = ProcessList(list);
                 var topTen = wordList.GetRange(0, 10);
-                wordList.RemoveRange(0,10);
-                var count = 0;
-                foreach (var word in wordList)
-                {
-                    count += word.Value;
-                }
-                topTen.Add(new KeyValuePair<string, int>("Other Words",count));
 
                 displayLabel.Text = "Top Ten:\n";
                 chart.Series[0].Points.Clear();
@@ -91,8 +86,17 @@ namespace WordVariationTracker
                 chart.ChartAreas[0].Area3DStyle.Enable3D = true;
                 chart.Series[0]["PieLabelStyle"] = "Disabled";
                 chart.Show();
-                    
-                
+
+                var topTenCount = (decimal) 0;
+                foreach (var word in topTen)
+                {
+                    topTenCount += word.Value;
+                }
+
+                var totalCount = (decimal)_wordCount.Values.Sum();
+                var percentage = Math.Round(topTenCount / totalCount * 100,2);
+
+                percentageLabel.Text = "Top Ten words make up " +percentage + "% of all used words";
             }
         }
 
