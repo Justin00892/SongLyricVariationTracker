@@ -4,12 +4,14 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Net;
 
 namespace WordVariationTracker
 {
     public partial class MainForm : Form
     {
         private readonly SortedDictionary<string, int> _wordCount = new SortedDictionary<string, int>();
+
         private IEnumerable<KeyValuePair<string, int>> _wordList;
 
         #region removableWordsList
@@ -58,7 +60,8 @@ namespace WordVariationTracker
         #endregion
         public MainForm()
         {
-            InitializeComponent();
+            LyricFinder("Chance the Rapper", "Favorite Song");
+            InitializeComponent();            
         }
 
         private void selectFileButton_Click(object sender, EventArgs e)
@@ -103,6 +106,17 @@ namespace WordVariationTracker
         {
             chart.Hide();
         }
+
+        private void LyricFinder(string artist, string song) 
+        {
+            artist = artist.Replace(" ", "%20");
+            song = song.Replace(" ", "%20");
+            System.Net.WebClient wc = new System.Net.WebClient();
+            string url = "http://lyric-api.herokuapp.com/api/find/" + artist + "/" + song;
+            string webData = wc.DownloadString(url);
+            string thing = webData.Split(':')[1];
+            int length = thing.Length-1;
+            thing = thing.Substring(1, thing.Length-8);
 
         private void UpdateDisplay()
         {
