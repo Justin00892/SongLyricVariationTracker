@@ -1,20 +1,14 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WordVariationTracker
 {
     public partial class MainForm : Form
     {
-        private SortedDictionary<string, int> _wordCount = new SortedDictionary<string, int>();
+        private readonly SortedDictionary<string, int> _wordCount = new SortedDictionary<string, int>();
         public MainForm()
         {
             InitializeComponent();
@@ -41,18 +35,34 @@ namespace WordVariationTracker
                     {
                         var text = reader.ReadToEnd().ToLower();
                         var list = text.Split(" ,!.?:;'\"".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                        ProcessList(list);
-                        displayLabel.Text = "Word Count:\n";
-                        foreach (var pair in _wordCount)
+                        var wordList = ProcessList(list);
+                        var topTen = wordList.GetRange(0, 10);
+                        wordList.RemoveRange(0,10);
+                        var count = 0;
+                        foreach (var word in wordList)
                         {
-                            displayLabel.Text += pair.Key + ": " + pair.Value + "\n";
+                            count += word.Value;
                         }
+                        topTen.Add(new KeyValuePair<string, int>("Other Words",count));
+
+                        displayLabel.Text = "Top Ten:\n";
+                        chart.Series[0].Points.Clear();
+                        foreach (var pair in topTen)
+                        {
+                            if(!pair.Key.Equals("Other Words"))
+                                displayLabel.Text += pair.Key + ": " + pair.Value + "\n";
+                            chart.Series[0].Points.AddXY(pair.Key, pair.Value);
+                        }
+                        chart.Legends[0].Enabled = true;
+                        chart.ChartAreas[0].Area3DStyle.Enable3D = true;
+                        chart.Series[0]["PieLabelStyle"] = "Disabled";
+                        chart.Show();
                     }
                 }
             }
         }
 
-        private void ProcessList(string[] list)
+        private List<KeyValuePair<string,int>> ProcessList(IEnumerable<string> list)
         {
             foreach (var word in list)
             {
@@ -61,11 +71,13 @@ namespace WordVariationTracker
                     count = _wordCount[word] + 1;
                 _wordCount[word] = count;
             }
+
+            return _wordCount.OrderByDescending(kvp => kvp.Value).ToList();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-
+            chart.Hide();
         }
     }
 }
