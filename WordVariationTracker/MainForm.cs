@@ -72,7 +72,7 @@ namespace WordVariationTracker
                 text = Regex.Replace(text, @"\t|\n|\r", " ");
                 var list = text.Split(" ,!.?:;\"()[]{}*".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                 var wordList = ProcessList(list);
-                var topTen = wordList.GetRange(0, 10);
+                var topTen = wordList.Where(w => !_removableWords.Contains(w.Key)).Take(10);
 
                 displayLabel.Text = "Top Ten:\n";
                 chart.Series[0].Points.Clear();
@@ -106,9 +106,10 @@ namespace WordVariationTracker
             {
                 
                 var count = 1;
-                if (_wordCount.ContainsKey(word) && !_removableWords.Contains(word))
+                if (_wordCount.ContainsKey(word))
                     count = _wordCount[word] + 1;
                 _wordCount[word] = count;
+
             }
 
             return _wordCount.OrderByDescending(kvp => kvp.Value).ToList();
