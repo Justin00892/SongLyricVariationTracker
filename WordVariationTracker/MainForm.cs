@@ -10,8 +10,6 @@ namespace WordVariationTracker
     public partial class MainForm : Form
     {
         private readonly SortedDictionary<string, int> _wordCount = new SortedDictionary<string, int>();
-        private IEnumerable<KeyValuePair<string, int>> _wordList;
-
         #region removableWordsList
         private readonly List<string> _removableWords = new List<string>
         {
@@ -54,8 +52,8 @@ namespace WordVariationTracker
             "those"
 
         };
-
         #endregion
+
         public MainForm()
         {
             InitializeComponent();
@@ -68,25 +66,22 @@ namespace WordVariationTracker
             var list = new List<string>();
             foreach (var file in openFileDialog.FileNames)
             {
-                var text = "";
+                string text;
                 using (var reader = new StreamReader(file))
                 {
-                    while (!reader.EndOfStream)
-                    {
-                        text = reader.ReadToEnd().ToLower();
-                    }
+                    text = reader.ReadToEnd().ToLower();
                     reader.Close();
                 }
 
                 text = Regex.Replace(text, @"\t|\n|\r", " ");
                 list.AddRange(text.Split(" ,!.?:;\"()[]{}*".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList());
             }
-            _wordList = ProcessList(list);
+            ProcessList(list);
 
             UpdateDisplay();
         }
 
-        private IEnumerable<KeyValuePair<string,int>> ProcessList(IEnumerable<string> list)
+        private void ProcessList(IEnumerable<string> list)
         {
             foreach (var word in list)
             {               
@@ -95,8 +90,6 @@ namespace WordVariationTracker
                     count = _wordCount[word] + 1;
                 _wordCount[word] = count;
             }
-
-            return _wordCount.OrderByDescending(kvp => kvp.Value);
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -106,9 +99,10 @@ namespace WordVariationTracker
 
         private void UpdateDisplay()
         {
+            var wordList = _wordCount.OrderByDescending(kvp => kvp.Value);
             var topTen = commonWordsCheckBox.Checked
-                ? _wordList.Where(w => !_removableWords.Contains(w.Key)).Take(10).ToList()
-                : _wordList.Take(10).ToList();
+                ? wordList.Where(w => !_removableWords.Contains(w.Key)).Take(10).ToList()
+                : wordList.Take(10).ToList();
 
             displayLabel.Text = @"Top Ten:" + Environment.NewLine;
             chart.Series[0].Points.Clear();
