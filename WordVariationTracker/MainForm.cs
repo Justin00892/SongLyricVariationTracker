@@ -70,7 +70,6 @@ namespace WordVariationTracker
                 using (var reader = new StreamReader(file))
                 {
                     text = reader.ReadToEnd();
-                    reader.Close();
                 }
                 ProcessList(text);
             }
@@ -99,7 +98,6 @@ namespace WordVariationTracker
 
         private void LyricFinder(string artist, string song)
         {
-            var list = new List<string>();
             artist = artist.Replace(" ", "%20");
             song = song.Replace(" ", "%20");
             var wc = new WebClient();
@@ -107,16 +105,20 @@ namespace WordVariationTracker
             try
             {
                 var webData = wc.DownloadString(url);
-                var thing = webData.Split(':')[1];
-                thing = thing.Replace(" - ", " ");
-                ProcessList(thing);
+                var list = webData.Split(':')[1];
+                list = list.Replace(" - ", " ");
+                ProcessList(list);
                 UpdateDisplay();
             }
             catch (Exception ex)
             {
                 Console.Error.Write(ex);
                 errorLabel.Visible = true;
-            }         
+            }
+            finally
+            {
+                searchButton.Enabled = true;
+            }
         }
 
         private void UpdateDisplay()
@@ -154,10 +156,11 @@ namespace WordVariationTracker
         }
 
         private void searchButton_Click(object sender, EventArgs e)
-        {
+        {            
             var artist = artistTextBox.Text;
             var song = songTextBox.Text;
-            LyricFinder(artist,song);
+            searchButton.Enabled = false;
+            LyricFinder(artist,song);           
         }
     }
 }
