@@ -57,7 +57,6 @@ namespace WordVariationTracker
 
         public MainForm()
         {
-            LyricFinder("Chance the Rapper", "Favorite Song");
             InitializeComponent();            
         }
 
@@ -65,28 +64,27 @@ namespace WordVariationTracker
         {
             var dr = openFileDialog.ShowDialog();
             if (dr != DialogResult.OK) return;
-            var list = new List<string>();
             foreach (var file in openFileDialog.FileNames)
             {
                 string text;
                 using (var reader = new StreamReader(file))
                 {
-                    text = reader.ReadToEnd().ToLower();
+                    text = reader.ReadToEnd();
                     reader.Close();
                 }
-
-                text = Regex.Replace(text, @"\t|\n|\r", " ");
-                list.AddRange(text.Split(" ,!.?:;\"()[]{}*".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList());
+                ProcessList(text);
             }
-            ProcessList(list);
-
             UpdateDisplay();
         }
 
-        private void ProcessList(IEnumerable<string> list)
+        private void ProcessList(string text)
         {
+            text = text.ToLower();
+            text = Regex.Replace(text, @"\t|\n|\r|\\n|\\t|\\r|\\", " ");
+            var list = text.Split(" ,!.?:;\"()[]{}*".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+
             foreach (var word in list)
-            {               
+            {
                 var count = 1;
                 if (_wordCount.ContainsKey(word))
                     count = _wordCount[word] + 1;
@@ -99,20 +97,31 @@ namespace WordVariationTracker
             chart.Hide();
         }
 
-        private static void LyricFinder(string artist, string song)
+        private void LyricFinder(string artist, string song)
         {
+            var list = new List<string>();
             artist = artist.Replace(" ", "%20");
             song = song.Replace(" ", "%20");
             var wc = new WebClient();
             var url = "http://lyric-api.herokuapp.com/api/find/" + artist + "/" + song;
-            var webData = wc.DownloadString(url);
-            var thing = webData.Split(':')[1];
-            var length = thing.Length - 1;
-            thing = thing.Substring(1, thing.Length - 8);
+            try
+            {
+                var webData = wc.DownloadString(url);
+                var thing = webData.Split(':')[1];
+                thing = thing.Replace(" - ", " ");
+                ProcessList(thing);
+                UpdateDisplay();
+            }
+            catch (Exception ex)
+            {
+                Console.Error.Write(ex);
+                errorLabel.Visible = true;
+            }         
         }
 
         private void UpdateDisplay()
         {
+            errorLabel.Visible = false;
             var wordList = _wordCount.OrderByDescending(kvp => kvp.Value);
             var topTen = commonWordsCheckBox.Checked
                 ? wordList.Where(w => !_removableWords.Contains(w.Key)).Take(10).ToList()
@@ -142,6 +151,13 @@ namespace WordVariationTracker
         private void commonWordsCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             UpdateDisplay();
+        }
+
+        private void searchButton_Click(object sender, EventArgs e)
+        {
+            var artist = artistTextBox.Text;
+            var song = songTextBox.Text;
+            LyricFinder(artist,song);
         }
     }
 }
