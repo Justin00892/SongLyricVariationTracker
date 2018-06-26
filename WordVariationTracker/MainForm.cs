@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using System.Net;
 
-namespace WordVariationTracker
+namespace SongLyricVariationTracker
 {
     public partial class MainForm : Form
     {

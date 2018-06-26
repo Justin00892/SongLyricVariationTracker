@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace WordVariationTracker
+namespace SongLyricVariationTracker
 {
     internal static class Program
     {

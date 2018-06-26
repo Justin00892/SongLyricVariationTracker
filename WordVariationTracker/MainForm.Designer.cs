@@ -1,4 +1,4 @@
-﻿namespace WordVariationTracker
+﻿namespace SongLyricVariationTracker
 {
     partial class MainForm
     {
