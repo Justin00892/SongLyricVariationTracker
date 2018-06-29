@@ -5,6 +5,28 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SongLyricVariationTracker", "WordVariationTracker\SongLyricVariationTracker.csproj", "{3F089EFF-444B-42E8-AF8D-3EC8600092B5}"
 EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "VariationSite", "VariationSite\", "{C209E1B7-2A4E-451D-A2C2-47687715F912}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5.2"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_62826"
+		Debug.AspNetCompiler.PhysicalPath = "VariationSite\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_62826\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_62826"
+		Release.AspNetCompiler.PhysicalPath = "VariationSite\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_62826\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "62826"
+		SlnRelativePath = "VariationSite\"
+		DefaultWebSiteLanguage = "Visual C#"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +37,10 @@ Global
 		{3F089EFF-444B-42E8-AF8D-3EC8600092B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F089EFF-444B-42E8-AF8D-3EC8600092B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F089EFF-444B-42E8-AF8D-3EC8600092B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C209E1B7-2A4E-451D-A2C2-47687715F912}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C209E1B7-2A4E-451D-A2C2-47687715F912}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C209E1B7-2A4E-451D-A2C2-47687715F912}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{C209E1B7-2A4E-451D-A2C2-47687715F912}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

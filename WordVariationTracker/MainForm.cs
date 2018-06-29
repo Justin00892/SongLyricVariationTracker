@@ -14,44 +14,11 @@ namespace SongLyricVariationTracker
         #region removableWordsList
         private readonly List<string> _removableWords = new List<string>
         {
-            "a",
-            "an",
-            "the",
-            "of",
-            "with",
-            "at",
-            "from",
-            "into",
-            "for",
-            "in",
-            "on",
-            "by",
-            "but",
-            "to",
-            "off",
-            "we",
-            "you",
-            "me",
-            "i",
-            "he",
-            "she",
-            "it",
-            "they",
-            "and",
-            "all",
-            "our",
-            "his",
-            "hers",
-            "their",
-            "my",
-            "them",
-            "theirs",
-            "her",
-            "too",
-            "this",
-            "that",
-            "those"
-
+            "a","an","the","of","with","at","from","into",
+            "for","in","on","by","but","to","off","we","you",
+            "me","i","he","she","it","they","and","all","our",
+            "his","hers","their","my","them","theirs","her",
+            "too","this","that","those"
         };
         #endregion
 
@@ -133,8 +100,8 @@ namespace SongLyricVariationTracker
             chart.Series[0].Points.Clear();
             foreach (var pair in topTen)
             {
-                if (!pair.Key.Equals("Other Words"))
-                    displayLabel.Text += pair.Key + @": " + pair.Value + Environment.NewLine;
+                //if (!pair.Key.Equals("Other Words"))
+                displayLabel.Text += pair.Key + @": " + pair.Value + Environment.NewLine;
                 chart.Series[0].Points.AddXY(pair.Key, pair.Value);
             }
             chart.Legends[0].Enabled = true;
@@ -143,7 +110,6 @@ namespace SongLyricVariationTracker
             chart.Show();
 
             var topTenCount = topTen.Aggregate((decimal)0, (current, word) => current + word.Value);
-
             var totalCount = (decimal)_wordCount.Values.Sum();
             var percentage = Math.Round(topTenCount / totalCount * 100, 2);
 
