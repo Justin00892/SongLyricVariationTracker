@@ -30,7 +30,6 @@
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.selectFileButton = new System.Windows.Forms.Button();
             this.textLabel = new System.Windows.Forms.Label();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.displayLabel = new System.Windows.Forms.Label();
@@ -43,18 +42,9 @@
             this.songLabel = new System.Windows.Forms.Label();
             this.searchButton = new System.Windows.Forms.Button();
             this.errorLabel = new System.Windows.Forms.Label();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.chart)).BeginInit();
             this.SuspendLayout();
-            // 
-            // selectFileButton
-            // 
-            this.selectFileButton.Location = new System.Drawing.Point(12, 88);
-            this.selectFileButton.Name = "selectFileButton";
-            this.selectFileButton.Size = new System.Drawing.Size(75, 23);
-            this.selectFileButton.TabIndex = 0;
-            this.selectFileButton.Text = "Select Files";
-            this.selectFileButton.UseVisualStyleBackColor = true;
-            this.selectFileButton.Click += new System.EventHandler(this.selectFileButton_Click);
             // 
             // textLabel
             // 
@@ -122,14 +112,14 @@
             // 
             this.artistTextBox.Location = new System.Drawing.Point(60, 12);
             this.artistTextBox.Name = "artistTextBox";
-            this.artistTextBox.Size = new System.Drawing.Size(100, 20);
+            this.artistTextBox.Size = new System.Drawing.Size(113, 20);
             this.artistTextBox.TabIndex = 6;
             // 
             // songTextBox
             // 
             this.songTextBox.Location = new System.Drawing.Point(60, 33);
             this.songTextBox.Name = "songTextBox";
-            this.songTextBox.Size = new System.Drawing.Size(100, 20);
+            this.songTextBox.Size = new System.Drawing.Size(113, 20);
             this.songTextBox.TabIndex = 7;
             // 
             // artistLabel
@@ -171,11 +161,22 @@
             this.errorLabel.Text = "Song not found";
             this.errorLabel.Visible = false;
             // 
+            // progressBar
+            // 
+            this.progressBar.ForeColor = System.Drawing.Color.Green;
+            this.progressBar.Location = new System.Drawing.Point(12, 88);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(161, 23);
+            this.progressBar.Step = 1;
+            this.progressBar.TabIndex = 12;
+            this.progressBar.Visible = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(511, 364);
+            this.Controls.Add(this.progressBar);
             this.Controls.Add(this.errorLabel);
             this.Controls.Add(this.searchButton);
             this.Controls.Add(this.songLabel);
@@ -187,7 +188,6 @@
             this.Controls.Add(this.chart);
             this.Controls.Add(this.displayLabel);
             this.Controls.Add(this.textLabel);
-            this.Controls.Add(this.selectFileButton);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "Song Lyric Variation Tracker";
@@ -197,8 +197,6 @@
             this.PerformLayout();
 
         }
-
-        private System.Windows.Forms.Button selectFileButton;
         private System.Windows.Forms.Label textLabel;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.Label displayLabel;
@@ -211,5 +209,6 @@
         private System.Windows.Forms.Label songLabel;
         private System.Windows.Forms.Button searchButton;
         private System.Windows.Forms.Label errorLabel;
+        private System.Windows.Forms.ProgressBar progressBar;
     }
 }
